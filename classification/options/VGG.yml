@@ -1,0 +1,39 @@
+#### general settings
+name: VGG
+gpu_ids: [0]
+
+#### model settings
+model:
+    name: B
+    batch_norm: True
+    num_classes: 11
+    dropout: 0.3
+    init_weights: true
+
+#### dataset settings
+dataset:
+  train:
+    path: /root/Desktop/course/datasets/food11/training
+  valid:
+    path: /root/Desktop/course/datasets/food11/validation
+
+
+#### training settings: learning rate, optimizer,  scheduler
+train:
+  lr: 1e-3
+  epochs: 300
+  batch_size: 64
+  optimizer:
+        name: Adam
+        weight_decay: 1e-5
+  scheduler:
+        name: CosineAnnealingLR
+        T_0: 100
+        eta_min: 1e-6
+        last_epoch: -1
+  criterion:
+        name: CrossEntropyLoss
+  Resume:
+        resume: False
+        resume_path: /root/Desktop/course/Paper/classification/weights
+  log_dir: /root/Desktop/course/Paper/classification/logs
