@@ -16,6 +16,8 @@ dataset:
     path: /root/Desktop/course/datasets/food11/training
   valid:
     path: /root/Desktop/course/datasets/food11/validation
+  test:
+    path: /root/Desktop/course/datasets/food11/test
 
 
 #### training settings: learning rate, optimizer,  scheduler
@@ -36,4 +38,3 @@ train:
   Resume:
         resume: False
         resume_path: /root/Desktop/course/Paper/classification/weights
-  log_dir: /root/Desktop/course/Paper/classification/logs

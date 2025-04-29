@@ -46,7 +46,10 @@ class FoodDataset(Dataset):
         if files != None:
             self.files = files
         print(f"One {path} sample", self.files[0])
-        self.transform = tfm
+        if tfm is None:
+            self.tfm = test_tfm
+        else:
+            self.tfm = train_tfm
 
     def __len__(self):
         return len(self.files)
@@ -65,10 +68,11 @@ class FoodDataset(Dataset):
 
 class MyDataset(Dataset):
 
-    def __init__(self, files, path, tfm=test_tfm):
+    def __init__(self, path, tfm=test_tfm):
         super(MyDataset).__init__()
         self.path = path
-        self.files = sorted([os.path.join(path, x) for x in files if x.endswith(".jpg")])
+        files = sorted(os.listdir(path))
+        self.files = sorted([x for x in files if x.endswith(".jpg")])
         self.trasform = tfm
         print(f"One {path} sample", self.files[0])
 
@@ -76,11 +80,12 @@ class MyDataset(Dataset):
         return len(self.files)
 
     def __getitem__(self, idx):
-        fname = self.files[idx]
+        id = self.files[idx]
+        fname = os.path.join(self.path, id)
         im = Image.open(fname)
         im = self.trasform(im)
         try:
             label = int(fname.split("/")[-1].split("_")[0])
         except:
             label = -1
-        return im, label
+        return im, label, id

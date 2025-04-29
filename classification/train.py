@@ -19,6 +19,8 @@ from torch.utils.tensorboard import SummaryWriter
 from sklearn.model_selection import KFold
 from sklearn.ensemble import AdaBoostClassifier
 
+from torchvision.models import resnet18, resnet50, vgg16
+
 from data.DataSet import FoodDataset
 from models import VGG
 import yaml
@@ -86,11 +88,11 @@ if __name__ == "__main__":
     epochs = train_cfg["epochs"]
     batch_size = train_cfg["batch_size"]
     save_path = os.path.join(train_cfg["Resume"]["resume_path"], config["name"]+".pth")
-    writer = SummaryWriter(log_dir=train_cfg["log_dir"])
+    writer = SummaryWriter()
 
     # Create the dataset
-    train_dataset = FoodDataset(path=dataset_cfg["train"]["path"])
-    valid_dataset = FoodDataset(path=dataset_cfg["valid"]["path"])
+    train_dataset = FoodDataset(path=dataset_cfg["train"]["path"], tfm="train")
+    valid_dataset = FoodDataset(path=dataset_cfg["valid"]["path"], tfm=None)
 
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=8)
     valid_loader = DataLoader(valid_dataset, batch_size=batch_size, shuffle=False, num_workers=8)
