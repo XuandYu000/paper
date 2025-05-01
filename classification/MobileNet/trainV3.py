@@ -12,8 +12,7 @@ import torch.optim as optim
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
 
-from models import mobilenetv2
-
+from models.mobilenetv3 import mobilenet_v3_small, mobilenet_v3_large
 
 # 数据增强
 data_transform = {
@@ -103,8 +102,8 @@ def parse_args():
     """:arguments"""
     config = {
         # model config
-        "gpu_id": 0,
-        "model_name": "mobilenetv2",
+        "gpu_id": 1,
+        "model_name": "mobilenetv3_small",
         "num_classes": 11,
 
         # training config
@@ -155,15 +154,15 @@ def main(
     print(f"Using {train_num} images for training, {val_num} images for validation.")
 
     # create model
-    if model_name == "mobilenetv2":
-        model = mobilenetv2.MobileNetV2(num_classes=num_classes)
-    # elif model_name == "mobilenetv3":
-    #     model = mobilenetv2.MobileNetV3(num_classes=num_classes)
+    if model_name == "mobilenetv3_small":
+        model = mobilenet_v3_small(num_classes=num_classes)
+    elif model_name == "mobilenetv3_large":
+        model = mobilenet_v3_large(num_classes=num_classes)
     else:
-        raise ValueError("model name must be mobilenetv2 or mobilenetv3. Got {}".format(model_name))
+        raise ValueError("model name must be mobilenetv3_small or mobilenetv3_large. Got {}".format(model_name))
 
     model = model.to(device)
-    optimizer = optimizer(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+    optimizer = optimizer(model.parameters(), lr=learning_rate)
 
     # schedule the learning rate
     scheduler = get_cosine_schedule_with_warmup(

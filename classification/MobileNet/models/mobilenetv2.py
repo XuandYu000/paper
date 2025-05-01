@@ -2,11 +2,9 @@ from typing import Any, Callable, Optional, Union
 
 import torch
 from torch import nn, Tensor
-
-__all__ = ['MobileNetV2']
-
 from torchvision.ops import Conv2dNormActivation
 
+__all__ = ['MobileNetV2']
 
 # Adjust the input value v to the nearest number that is divisible by divisor.
 # Ensure compatibility with hardware constraints or optimization requirements.
