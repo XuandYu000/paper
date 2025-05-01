@@ -11,6 +11,7 @@ from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
 
 from model import resnet34, resnet50, resnet101
+from torchvision.models import resnet34 as Resnet34
 
 
 # 数据增强
@@ -99,6 +100,8 @@ def main():
         model = resnet50(num_classes=num_classes)
     else:
         model = resnet101(num_classes=num_classes)
+
+    model = Resnet34(num_classes=num_classes)
     model = model.to(device)
     optimizer = optimizer(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 

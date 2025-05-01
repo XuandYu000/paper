@@ -7,6 +7,7 @@ from torch.utils.data import DataLoader, Dataset
 from PIL import Image
 from torchvision import transforms, datasets
 import torch.optim as optim
+from torchvision.models import vgg16, vgg13_bn
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
 
@@ -97,6 +98,7 @@ def main():
 
     # create model
     model = _vgg(model_size, batch_norm=batch_norm, num_classes=num_classes, init_weights=init_weights, dropout=dropout)
+    model = vgg13_bn(pretrained=False, num_classes=num_classes)
     model = model.to(device)
     optimizer = optimizer(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 
