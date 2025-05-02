@@ -139,8 +139,8 @@ def main(
     save_pth = "./{}.pth".format(model_name)
 
     # 加载数据集路径
-    data_root = os.path.abspath(os.path.join(os.getcwd(), "../../.."))
-    image_path = os.path.join(data_root, "datasets", "food11")
+    data_root = os.path.abspath(os.path.join(os.getcwd(), "../../../datasets"))
+    image_path = os.path.join(data_root, "food11")
     assert os.path.exists(image_path), "dataset path does not exist."
 
     # 加载数据集

@@ -60,8 +60,8 @@ def main():
     batch_size = 64
     nw = min([os.cpu_count(), batch_size if batch_size > 1 else 0, 8])  # number of workers
 
-    data_root = os.path.abspath(os.path.join(os.getcwd(), "../../.."))
-    image_path = os.path.join(data_root, "datasets", "food11")
+    data_root = os.path.abspath(os.path.join(os.getcwd(), "../../../datasets"))
+    image_path = os.path.join(data_root, "food11")
     test_path = os.path.join(image_path, "test")
     assert os.path.exists(test_path), "dataset path does not exist."
 
