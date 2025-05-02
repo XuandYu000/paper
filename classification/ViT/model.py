@@ -54,14 +54,19 @@ class Attention(nn.Module):
         ) if project_out else nn.Identity()
 
     def forward(self, x):
-        x = self.norm(x)
+        x = self.norm(x) # x: (batch_size, num_patches + 1, dim)
 
-        qkv = self.to_qkv(x).chunk(3, dim = -1)
-        q, k, v = map(lambda t: rearrange(t, 'b n (h d) -> b h n d', h = self.heads), qkv)
+        qkv = self.to_qkv(x).chunk(3, dim = -1) # qkv: (batch_size, num_patches + 1, heads * dim_head)
+        # 多头注意力机制的实现，这里的实现是将 qkv 的维度均分为 heads 个。
+        q, k, v = map(lambda t: rearrange(t, 'b n (h d) -> b h n d', h = self.heads), qkv) # q, k, v: (batch_size, heads, num_patches + 1, dim_head)
 
-        dots = torch.matmul(q, k.transpose(-1, -2)) * self.scale
+        # q: (batch_size, heads, num_patches + 1, dim_head)
+        # k.transpose(-1, -2): (batch_size, heads, dim_head, num_patches + 1)
+        # 矩阵乘法在批次(batch_size, heads)维度对齐后，
+        # 进行(num_patches + 1, dim_head) @ (dim_head, num_patches + 1) = (num_patches + 1, num_patches + 1)的矩阵乘法
+        dots = torch.matmul(q, k.transpose(-1, -2)) * self.scale # dots: (batch_size, heads, num_patches + 1, num_patches + 1)
 
-        attn = self.attend(dots)
+        attn = self.attend(dots) # attn: (batch_size, heads, num_patches + 1, num_patches + 1)
         attn = self.dropout(attn)
 
         out = torch.matmul(attn, v)
@@ -120,27 +125,34 @@ class ViT(nn.Module):
             nn.LayerNorm(dim)
         )
 
+        # 可学习的位置编码，引入位置信息
         self.pos_embedding = nn.Parameter(torch.randn(1, num_patches + 1, dim))
+        # cls token 作为类别标记
         self.cls_token = nn.Parameter(torch.randn(1, 1, dim))
         self.dropout = nn.Dropout(emb_dropout)
 
         self.transformer = Transformer(dim, depth, heads, dim_head, mlp_dim, dropout)
 
+        # 当为分类任务时，pool = 'cls'为类别标记，取 cls token 的输出
+        # 当为回归任务时，pool = 'mean'为平均池化，取所有 patch 的输出
         self.pool = pool
         self.to_latent = nn.Identity()
 
         self.mlp_head = nn.Linear(dim, num_classes)
 
     def forward(self, img):
-        x = self.to_patch_embedding(img)
-        b, n , _ = x.shape
+        x = self.to_patch_embedding(img) # x: (batch_size, num_patches, dim)
 
-        cls_tokens = repeat(self.cls_token, '1 1 d -> b 1 d', b = b)
-        x = torch.cat((cls_tokens, x), dim = 1)
+        b, n , _ = x.shape
+        cls_tokens = repeat(self.cls_token, '1 1 d -> b 1 d', b = b) # cls_tokens: (batch_size, 1, dim)
+
+        x = torch.cat((cls_tokens, x), dim = 1) # x: (batch_size, num_patches + 1, dim)
+
         x += self.pos_embedding[:, :(n + 1)]
         x = self.dropout(x)
 
-        x = self.transformer(x)
+        # Transformer 不改变输入的形状
+        x = self.transformer(x) # x: (batch_size, num_patches + 1, dim)
 
         x = x.mean(dim = 1) if self.pool == 'mean' else x[:, 0]
 
@@ -184,7 +196,7 @@ def vit_huge_patch14(**kwargs):
     return model
 
 if __name__ == '__main__':
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
 
     # Example usage
     model = vit_base_patch16().to(device)
