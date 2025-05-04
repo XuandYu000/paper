@@ -10,9 +10,9 @@ cv领域的一些论文的复现，主要包括:
     - [ResNet](https://arxiv.org/abs/1512.03385)
     - [MobileNetV2](https://arxiv.org/abs/1801.04381)
     - [MobileNetV3](https://arxiv.org/abs/1905.02244)
+    - [EfficientNet](https://arxiv.org/pdf/1905.11946)
     - [Vision Transformer](https://arxiv.org/abs/2010.11929)
     - [Swin Transformer](https://arxiv.org/abs/2103.14030)
-      - [repvgg](https://arxiv.org/abs/2003.13630)
 
 TODO:
 
