@@ -4,7 +4,7 @@ The paper "An Image is Worth 16x16 Words: Transformers for Image Recognition at 
 Arxiv: https://arxiv.org/abs/2010.11929
 
 The code can be seen here:
-    https://github.com/tensorflow/models/blob/master/research/slim/nets/mobilenet/mobilenet.py
+    https://github.com/lucidrains/vit-pytorch/blob/main/vit_pytorch/vit.py
 """
 from typing import Union
 
