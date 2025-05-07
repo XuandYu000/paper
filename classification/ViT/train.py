@@ -102,14 +102,14 @@ def parse_args():
     """:arguments"""
     config = {
         # model config
-        "gpu_id": 0,
+        "gpu_id": 1,
         "model_name": "vit_base_patch16", # vit_base_patch16, vit_large_patch16, vit_huge_patch14
         "num_classes": 11,
 
         # training config
         "num_epochs": 80,
         "warmup_epochs": 8,
-        "batch_size": 32,
+        "batch_size": 64,
         "learning_rate": 1e-3,
         "weight_decay": 1e-5,
         "loss_function": nn.CrossEntropyLoss(),
