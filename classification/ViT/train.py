@@ -110,8 +110,8 @@ def parse_args():
         "num_epochs": 80,
         "warmup_epochs": 8,
         "batch_size": 64,
-        "learning_rate": 1e-3,
-        "weight_decay": 1e-5,
+        "learning_rate": 1e-5,
+        "weight_decay": 1e-7,
         "loss_function": nn.CrossEntropyLoss(),
         "optimizer": optim.AdamW,
     }
