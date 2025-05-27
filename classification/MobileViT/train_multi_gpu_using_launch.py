@@ -10,7 +10,7 @@ import torch.optim.lr_scheduler as lr_scheduler
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
 
-from model import ConvNeXt_T, ConvNeXt_S, ConvNeXt_B, ConvNeXt_L, ConvNeXt_XL
+from model import MobileVit
 from dataset import MyDataSet
 from multi_train_utils.distributed_utils import init_distributed_mode, dist, cleanup
 from multi_train_utils.train_eval_utils import train_one_epoch, evaluate
@@ -64,7 +64,7 @@ def main(args):
                                              num_workers=nw,
                                              collate_fn=val_data_set.collate_fn)
     # 实例化模型
-    model = ConvNeXt_T(num_classes=args.num_classes).to(device)
+    model = MobileVit(model= 'MobileVit_S',num_classes=args.num_classes).to(device)
 
     # 如果存在预训练权重则载入
     if os.path.exists(weights_path):
