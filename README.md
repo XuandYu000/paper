@@ -12,6 +12,9 @@ cv领域的一些论文的复现，主要包括:
     - [MobileNetV3](https://arxiv.org/abs/1905.02244)
     - [Vision Transformer](https://arxiv.org/abs/2010.11929)
     - [Swin Transformer](https://arxiv.org/abs/2103.14030)
+    - [ConvNeXt](https://arxiv.org/pdf/2201.03545)
+    - [ShuffleNet](https://arxiv.org/pdf/1707.01083)
+    - [MobileViT](https://arxiv.org/pdf/2110.02178)
 
 TODO:
 
